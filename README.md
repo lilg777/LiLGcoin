@@ -1,0 +1,2 @@
+# LiLGcoin
+LiLGcoin ($LGX)
