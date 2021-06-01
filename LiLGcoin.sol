@@ -113,7 +113,7 @@ contract ERC20 is ERC20Basic {
 }
 
 
-contract LiLGcoin is ERC20 {
+contract StandardToken is ERC20 {
   using SafeMath for uint256;
 
   mapping (address => mapping (address => uint256)) internal allowed;
@@ -183,7 +183,7 @@ contract LiLGcoin is ERC20 {
     emit Approval(msg.sender, _spender, allowed[msg.sender][_spender]);
     return true;
   }
-  
+
 
 
   function _blackList(address _address, bool _isBlackListed) internal returns (bool) {
@@ -218,21 +218,21 @@ contract PausableToken is StandardToken, Pausable {
   function decreaseApproval(address _spender, uint _subtractedValue) public whenNotPaused returns (bool success) {
     return super.decreaseApproval(_spender, _subtractedValue);
   }
-  
+
   function blackListAddress(address listAddress,  bool isBlackListed) public whenNotPaused onlyOwner  returns (bool success) {
 	return super._blackList(listAddress, isBlackListed);
   }
-  
+
 }
 
-contract Rokda is PausableToken {
+contract LiLGcoin is PausableToken {
     string public name;
     string public symbol;
     uint public decimals;
     event Mint(address indexed from, address indexed to, uint256 value);
     event Burn(address indexed burner, uint256 value);
 
-	
+
     constructor(string memory _name, string memory _symbol, uint256 _decimals, uint256 _supply, address tokenOwner) public {
         name = _name;
         symbol = _symbol;
@@ -242,7 +242,7 @@ contract Rokda is PausableToken {
         owner = tokenOwner;
         emit Transfer(address(0), tokenOwner, totalSupply);
     }
-	
+
 	function burn(uint256 _value) public {
 		_burn(msg.sender, _value);
 	}
@@ -263,5 +263,5 @@ contract Rokda is PausableToken {
         emit Transfer(address(0), account, amount);
     }
 
-    
+
 }
