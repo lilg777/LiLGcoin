@@ -1,0 +1,13 @@
+LiLGcoin: Secured Peer-to-Peer Electronic Cash System
+
+LGXatoshi
+lilgcoin@gmail.com
+www.lilgcoin.org
+
+Abstract. An innovative peer-to-peer system that is based on Satoshi Nakamoto's idea to continue on the tradition of cryptocurrency transfers in the absence of a financial institution.
+Each account has a globally available nonce that prohibits same-chain replay and double-spending threats.
+The nonce is the sequence number that miners examine since a block with an insufficient nonce is an invalid block.
+To avoid fraudster interactions, LiLGcoin has incorporated functionalities such as Pause (Certain functions in the contract), Freeze (Accounts), Burn (Fraudulent coins), and ReentrancyGuard (Modifier that prevents reentrancy).
+
+ 1.  Introduction 
+The world is transitioning into the crypto era, NFT's, De-Fi Dapps, Movies and Games will
