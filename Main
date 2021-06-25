@@ -339,10 +339,23 @@ contract LiLGcoin is FreezableToken, BurnableToken, ReentrancyGuard {
     string public name = "LiLGcoin";
     string public symbol = "LGX";
     uint public decimals = 16;
+    uint256 internal initialSupply = 375000;
     uint256 public totalSupply = 7500000;
+    mapping(address => uint256) internal balances;
+    mapping(address => bool) public frozen;
+    mapping(address => mapping(address => uint256)) internal allowed;
+
+    event Freeze(address indexed holder);
+    event Unfreeze(address indexed holder);
+
+    modifier notFrozen(address _holder) {
+       require(!frozen[_holder]);
+    _;
+}
+    
     event Mint(address indexed from, address indexed to, uint256 value);
     event Burn(address indexed burner, uint256 value);
-
+    
 
     constructor(string memory _name, string memory _symbol, uint256 _decimals, uint256 _supply, address tokenOwner) ReentrancyGuard() public {
         name = _name;
@@ -366,13 +379,49 @@ contract LiLGcoin is FreezableToken, BurnableToken, ReentrancyGuard {
 		emit Transfer(_who, address(0), _value);
 	}
 
-    function mint(address account, uint256 amount) onlyOwner public {
+    function mint(address account, uint256 amount) nonReentrant() onlyOwner public {
 
         totalSupply = totalSupply.add(amount);
         balances[account] = balances[account].add(amount);
         emit Mint(address(0), account, amount);
         emit Transfer(address(0), account, amount);
     }
+    
+/**
+  * Freeze Account.
+  */
 
+    function freezeAccount(address _holder) nonReentrant() public onlyOwner returns (bool) {
+
+        require(!frozen[_holder]);
+        frozen[_holder] = true;
+        emit Freeze(_holder);
+        return true;
+    }
+
+/**
+  * Unfreeze Account.
+  */
+
+    function unfreezeAccount(address _holder) public onlyOwner returns (bool) {
+
+        require(frozen[_holder]);
+        frozen[_holder] = false;
+        emit Unfreeze(_holder);
+        return true;
+    }
+
+/** 
+ * @dev Internal function to determine if an address is a contract
+ * @param addr The address being queried
+ * @return True if `_addr` is a contract
+ */
+
+    function isContract(address addr) internal view returns (bool) {
+
+        uint size;
+        assembly{size := extcodesize(addr)}
+        return size > 0;
+    }
 
 }
